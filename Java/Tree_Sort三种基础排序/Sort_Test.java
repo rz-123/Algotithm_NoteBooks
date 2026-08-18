@@ -1,4 +1,4 @@
-package Tree_Sort;
+package Tree_Sort三种基础排序;
 
 public class Sort_Test {
 
@@ -9,7 +9,7 @@ public class Sort_Test {
         arr[j] = tmp;
     }
 
-    // 制造随机数组，n个数，每个数0-m之间随机
+    // 制，n个数，每个数0-m之间随机
     public static int[] adamArray(int n, int m) {
         int[] arr = new int[n];
         for (int i = 0; i < n; i++) {
@@ -94,7 +94,7 @@ public class Sort_Test {
 
     public static void main(String[] args) {
         int N = 100; // 随机数组的最大长度
-        int M = 10000;  // 每个数值随机等概率 1-M
+        int M = 10000;  // 每个数值1到M随机等概率
         int times = 500; // 循环次数
         for (int i = 0; i < times; i++) {
             int n = (int) (Math.random() * N); // 随机得到数组长度
