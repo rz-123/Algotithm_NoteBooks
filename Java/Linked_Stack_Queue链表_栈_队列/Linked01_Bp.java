@@ -1,8 +1,6 @@
 package Linked_Stack_Queue链表_栈_队列;
 
-import class012.PartitionList;
-
-public class Stack01_Bp {
+public class Linked01_Bp {
 
 
     // 单链表
