@@ -116,7 +116,7 @@ public class Stack01_Bp {
                 }
                 head = next ;
             }
-            // 左右链接
+            // 左右进行连接
             if (leftHead == null){
                 return rightHead ; // 如果左边为空 直接返回右边头结点
             }
