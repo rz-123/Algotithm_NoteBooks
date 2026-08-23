@@ -53,7 +53,7 @@ public class Heap_Sort {
         }
     }
 
-    // 自上到下
+    // 节点上浮，i指针从左往右走
     // 先变成大根堆，然后0位置的数与最下边的数交换，然后size-1，断开
     // 然后现在0位置上的数向下比较
     public static void heapSort1(int[] arr){
@@ -69,11 +69,12 @@ public class Heap_Sort {
         }
     }
 
-    // 自下到上
+    // 节点下沉，i指针从右往左走，
     public static void heapSort2(int[] arr){
         int n = arr.length ;
         // 变成大根堆
-        for (int i = n -1 ; i >= 0; i--) {
+        // i指针从n/2-1开始，因为最下层的孩子没有孩子
+        for (int i = n / 2 - 1 ; i >= 0; i--) {
             heapify(arr , i , n);
         }
         int size = n ;
