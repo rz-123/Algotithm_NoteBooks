@@ -60,8 +60,8 @@ public class XorTest {
     }
 
     // Brian Kernighan算法 - 提取出二进制状态中最右侧的1
-    public static int BK(int x){
-        return x & (-x) ;
+    public static boolean isPowerOfTwo(int n) {
+        return n > 0 && n == (n & -n);  // -n == ~n+1
     }
 
     // 数组中一个数出现奇数次，其余的数出现偶数次，返回出现奇数次的数。
