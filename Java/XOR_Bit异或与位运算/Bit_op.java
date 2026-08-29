@@ -35,6 +35,7 @@ public class Bit_op {
     }
 
     // 区间[left, right]内所有数字 & 的结果
+    // https://leetcode.cn/problems/bitwise-and-of-numbers-range/
     public static int rangBitwiseAnd(int left , int right){
         while (left < right){
             // left < right,那么right最右侧的1留不下，就减去，
