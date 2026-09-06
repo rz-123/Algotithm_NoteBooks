@@ -11,9 +11,9 @@ public class Code04_DepthOfBinaryTree {
         public TreeNode right;
     }
 
-    public static int maDepth(TreeNode root){
+    public static int maxDepth(TreeNode root){
         // 最后加1，是因为还有root节点
-        return root == null ? 0 : Math.max(maDepth(root.left),maDepth(root.right)) + 1 ;
+        return root == null ? 0 : Math.max(maxDepth(root.left),maxDepth(root.right)) + 1 ;
     }
 
     // 最小深度
