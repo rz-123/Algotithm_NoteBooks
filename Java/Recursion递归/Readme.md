@@ -17,6 +17,17 @@
 # 7 : 打印n层汉诺塔问题的最优移动轨迹。时间复杂度O(2^n)
 * Code07_TowerOfHanoi
 * https://leetcode.cn/problems/hanota-lcci/
+----
+递归嵌套
+# 含有嵌套的表达式求值
+* Code01_BasicCalculatorIII
+* https://www.nowcoder.com/practice/c215ba61c8b1443b996351df929dc4d4
+# 含有嵌套的字符串解码。时间复杂度O(n)
+* Code02_DecodeString
+* https://leetcode.cn/problems/decode-string/
+# 含有嵌套的分子式求原子数量。时间复杂度O(n)
+* Code03_NumberOfAtoms
+* https://leetcode.cn/problems/number-of-atoms/
 
 
 
