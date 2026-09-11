@@ -28,6 +28,11 @@
 # 含有嵌套的分子式求原子数量。时间复杂度O(n)
 * Code03_NumberOfAtoms
 * https://leetcode.cn/problems/number-of-atoms/
+---
+# N 皇后问题
+* NQueens
+* https://leetcode.cn/problems/n-queens-ii/
+
 
 
 

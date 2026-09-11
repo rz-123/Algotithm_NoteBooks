@@ -53,7 +53,7 @@ public class Code03_NumberOfAtoms {
         return ans ;
     }
 
-    // 根据cnt来对相应的化学符号进行写入
+    // 将化学符号写入ans中
     public static void fill(TreeMap<String, Integer> ans, StringBuilder name, TreeMap<String, Integer> pre, int cnt){
         if (name.length() > 0 || pre != null){
             cnt = cnt == 0 ? 1 :cnt ; // 因为化学符号后边没数字的就说明要写入一遍
