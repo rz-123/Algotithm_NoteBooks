@@ -26,6 +26,13 @@ public class Code02_EatGrass {
 
     // 规律解法
     // % 5 == 0 或 % 5 == 2 的都是B
+    public static String f2(int n ){
+        if (n % 5 == 0 || n % 5 == 2) {
+            return "B" ;
+        } else {
+            return "A" ;
+        }
+    }
 
     public static void main(String[] args) {
         for (int i = 0; i < 50; i++) {
