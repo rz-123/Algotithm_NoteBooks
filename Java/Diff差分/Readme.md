@@ -29,8 +29,7 @@
 # Code05_StrongestForceField
 * 最强力场
 * https://leetcode.cn/problems/xepqZ5/description/
-# 
-* 
+
 
 
 
