@@ -14,8 +14,91 @@ package Breadth_First_Search_BFS_宽度优先遍历;
 // 每个序列都应该以单词列表 [beginWord, s1, s2, ..., sk] 的形式返回
 // 测试链接 : https://leetcode.cn/problems/word-ladder-ii/
 
+import java.util.*;
+
 public class Code06_WordLadderII {
 
+    public static HashSet<String> dict ;
+    public static HashSet<String> curLevel = new HashSet<>() ;
+    public static HashSet<String> nextLevel = new HashSet<>() ;
 
+    // 反向图
+    public static HashMap<String,ArrayList<String>> graph = new HashMap<>() ;
+    // 存放有效生成路径
+    public static LinkedList<String> path = new LinkedList<>() ;
+    public static List<List<String>> ans = new ArrayList<>() ;
 
+    public static void build(List<String> wordList){
+        dict = new HashSet<>(wordList) ;
+        graph.clear();
+        ans.clear();
+        curLevel.clear();
+        nextLevel.clear();
+    }
+
+    public static List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+        build(wordList);
+        if (!dict.contains(endWord)) {
+            return ans ;
+        }
+        if (bfs(beginWord , endWord)) {
+            dfs(endWord , beginWord);
+        }
+        return ans ;
+    }
+
+    // 从begin -> end  ，遍历 建图，
+    // 如果能找到 end , 就返回true
+    public static boolean bfs(String begin , String end){
+        boolean find = false ;
+        curLevel.add(begin) ; // 加入 HashSet
+        // 如果curleve不为空，就继续
+        while (!curLevel.isEmpty()) {
+            dict.removeAll(curLevel);  // 删除这层 是为了下边不重复
+            for (String word : curLevel) {
+                char[] w = word.toCharArray() ; // 转成字符
+                for (int i = 0; i < w.length; i++) {
+                    char old = w[i] ; //
+                    for (char ch = 'a' ; ch <= 'z' ; ch++) {
+                        w[i] = ch ; // 26个字母挨个对比
+                        String str = String.valueOf(w);
+                        // dict中有这个单词，并且不跟上边的word重复
+                        if (dict.contains(str) && !str.equals(word)) {
+                            // 如果找到end 就返回true
+                            if (str.equals(end)) {
+                                find = true ;
+                            }
+                            graph.putIfAbsent(str , new ArrayList<>()) ;// 建图
+                            graph.get(str).add(word) ; // 在相应位置加入该单词
+                            nextLevel.add(str) ;
+                        }
+                    }
+                    w[i] = old ;
+                }
+            }
+            if (find) {
+                return true ;
+            } else {
+                // 否则 就是 curLevel 与 nextLevel 交换位置
+                HashSet<String> tmp = curLevel ;
+                curLevel = nextLevel ;
+                nextLevel = tmp ;
+                nextLevel.clear();
+            }
+        }
+        return false ;
+    }
+    // 反向建图
+    public static void dfs (String word , String aim){
+        path.addFirst(word); // 从头加入word
+
+        if (word.equals(aim)) {
+            ans.add(new ArrayList<>(path)) ;
+        } else if (graph.containsKey(word)) {
+            for (String next : graph.get(word)) {
+                dfs(next,aim);
+            }
+        }
+        path.removeFirst() ;
+    }
 }
