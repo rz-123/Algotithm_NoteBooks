@@ -73,7 +73,7 @@ public class Code02_SnacksWaysBuyTickets {
 
     // f 递归函数
     // arr[i..e-1]的范围展开 到e就停止，ans数组的累加和到了什么位置
-    // w：门票资金，ans : 门票资金累加和数组，s：从0开始累加
+    // w：门票资金，ans : 门票资金累加和数组，s：累加和，j：ans数组的j位置
     public static int f(int i, int e, long s, long w, long[] ans, int j){
         if (s > w) {
             return j ;

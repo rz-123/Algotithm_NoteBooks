@@ -43,16 +43,20 @@ public class Code01_WordLadder {
                         if (change != old) {
                             word[i] = change ; // 替代字符进行对比
                             String next = String.valueOf(word);
+                            // 如果扩的单词在bigLevel中，也就是找到了，直接返回层数len
                             if (bigLevel.contains(next)) {
                                 return len ;
                             }
+                            // 当前的单词在不在传入的词表中，
+                            // 如果在，就在词表中删除（避免后续重复出现）
+                            // 然后 在下一层中加入该单词
                             if (dict.contains(next)) {
                                 dict.remove(next) ;
                                 nextLevel.add(next) ;
                             }
                         }
                      }
-                    word[i] = old ;
+                    word[i] = old ; // 恢复单词
                 }
             }
             // 如果下一层的数量要比这层小
