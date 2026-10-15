@@ -19,7 +19,9 @@ import java.util.*;
 public class Code06_WordLadderII {
 
     public static HashSet<String> dict ;
+    // 当前层
     public static HashSet<String> curLevel = new HashSet<>() ;
+    // 下一层
     public static HashSet<String> nextLevel = new HashSet<>() ;
 
     // 反向图
@@ -70,33 +72,35 @@ public class Code06_WordLadderII {
                             }
                             graph.putIfAbsent(str , new ArrayList<>()) ;// 建图
                             graph.get(str).add(word) ; // 在相应位置加入该单词
-                            nextLevel.add(str) ;
+                            nextLevel.add(str) ; // 下一层中加入尝试的单词
                         }
                     }
-                    w[i] = old ;
+                    w[i] = old ; // 恢复字符
                 }
             }
             if (find) {
-                return true ;
+                return true ;  // 上边全部循环完成后，如果find为true才会返回true
             } else {
                 // 否则 就是 curLevel 与 nextLevel 交换位置
                 HashSet<String> tmp = curLevel ;
                 curLevel = nextLevel ;
                 nextLevel = tmp ;
                 nextLevel.clear();
+                // nextLevel当做curLevel 继续做上边的循环
+                // curLevel当做nextLevel并且清空，进行下一层的单词存放
             }
         }
         return false ;
     }
-    // 反向建图
+    // 反向建图 end->begin
     public static void dfs (String word , String aim){
-        path.addFirst(word); // 从头加入word
-
+        path.addFirst(word); // word
         if (word.equals(aim)) {
+            // 找到aim，在ans中加入该路径
             ans.add(new ArrayList<>(path)) ;
         } else if (graph.containsKey(word)) {
             for (String next : graph.get(word)) {
-                dfs(next,aim);
+                dfs(next,aim); // 递归
             }
         }
         path.removeFirst() ;
