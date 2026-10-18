@@ -10,8 +10,72 @@ package Dijkstra_分层最短路;
 // 请返回小明最少需要花费多少单位时间从起点城市 start 抵达终点城市 end
 // 测试链接 : https://leetcode.cn/problems/DFPeFJ/
 
+import java.util.ArrayList;
+import java.util.PriorityQueue;
+
 public class Code05_VisitCityMinCost {
+    public static int electricCarPlan(int[][] paths, int cnt, int start, int end, int[] charge) {
+        int n =charge.length ;
+        // 建图
+        ArrayList<ArrayList<int[]>> graph = new ArrayList<>() ;
+        for (int i = 0 ; i < n ; i++) {
+            graph.add(new ArrayList<>()) ;
+        }
+        for (int[] path : paths) {
+            // 无向图，创建两条有向线
+            graph.get(path[0]).add(new int[] {path[1] , path[2]}) ;
+            graph.get(path[1]).add(new int[] {path[0] , path[2]}) ;
+        }
 
+        // 最短路数组
+        int[][] distance = new int[n][cnt + 1] ;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j <= cnt; j++) {
+                distance[i][j] = Integer.MAX_VALUE ;
+            }
+        }
 
+        distance[start][0] = 0 ; // 开始节点最短路设为0
 
+        boolean[][] visited  =  new boolean[n][cnt + 1] ;
+        // [当前点，到达当前点的电量，花费的时间]
+        PriorityQueue<int[]> heap = new PriorityQueue<>((int[] a , int[] b ) -> (a[2] - b[2])) ;
+        heap.add(new int[] {start , 0 , 0}) ; // 起始点加入堆
+
+        while (!heap.isEmpty()) {
+            int[] record = heap.poll() ;
+            int cur = record[0] ;
+            int power = record[1] ;
+            int cost = record[2] ;
+            if (visited[cur][power]) {
+                continue;
+            }
+            if (cur == end) {
+                // 常见剪枝
+                // 发现终点直接返回
+                // 不用等都结束
+                return cost;
+            }
+            visited[cur][power] = true ;
+            // 如果 来到当前点的电量 < 当前点
+            if (power < cnt) {
+                // 那么就充一个点
+                if (!visited[cur][power + 1] && cost + charge[cur] < distance[cur][power + 1]) {
+                    distance[cur][power + 1] = cost + charge[cur] ;
+                    heap.add(new int[] {cur , power + 1 , cost + charge[cur]}) ;
+                }
+            }
+            for (int[] edge :graph.get(cur)) {
+
+                int nextCity = edge[0];
+                int restPower = power - edge[1];
+                int nextCost = cost + edge[1];
+                if (restPower >= 0 && !visited[nextCity][restPower] && nextCost < distance[nextCity][restPower]) {
+                    distance[nextCity][restPower] = nextCost;
+                    heap.add(new int[]{nextCity, restPower, nextCost});
+                }
+            }
+        }
+        return -1;
+    }
 }

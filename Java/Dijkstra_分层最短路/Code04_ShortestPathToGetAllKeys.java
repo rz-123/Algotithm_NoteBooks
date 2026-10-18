@@ -14,8 +14,94 @@ package Dijkstra_分层最短路;
 // 返回获取所有钥匙所需要的移动的最少次数。如果无法获取所有钥匙，返回 -1 。
 // 测试链接：https://leetcode.cn/problems/shortest-path-to-get-all-keys
 
+import java.io.StreamTokenizer;
+
 public class Code04_ShortestPathToGetAllKeys {
 
+    public static int MAXN = 31 ;
+    public static int MAXM = 31 ;
+    public static int MAXK = 6 ; // 钥匙或锁的数量
 
+    public static int[] move = new int[]{-1,0,1,0,-1} ; // 上下左右
 
+    public static char[][] grid = new char[MAXN][];
+
+    // 是否进入过队列
+    public static boolean[][][] visited = new boolean[MAXN][MAXM][1 << MAXK] ;
+    // [行，列，状态（钥匙）]
+    public static int[][] queue = new int[MAXN * MAXM * (1<<MAXK)][3] ;
+
+    public static int l , r , n , m , key ;
+
+    public static void build(String[] g){
+        l = r = key = 0 ;
+        n = g.length ;
+        m = g[0].length() ;
+        for (int i = 0; i < n; i++) {
+            grid[i] = g[i].toCharArray() ;
+        }
+        // 遍历二维网格，统计key的值
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == '@') {
+                    queue[r][0] = i ;
+                    queue[r][1] = j ;
+                    queue[r++][2] = 0 ;
+                }
+                if (grid[i][j] >= 'a' && grid[i][j] <= 'f'){
+                    key |= 1 << (grid[i][j] - 'a') ;
+                }
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                for (int k = 0; k <= key ; k++) {
+                    visited[i][j][k] = false ;
+                }
+            }
+        }
+    }
+
+    public static int shortestPathAllKeys(String[] g){
+        build(g) ;
+        int level = 1 ;
+        while( l < r ) {
+            for (int k = 0 , size = r - l , x, y , s ; k<size ; k++){
+                // 队列弹出值
+                x = queue[l][0] ;
+                y = queue[l][1]  ;
+                s = queue[l++][2] ;
+                for (int i = 0 , nx , ny , ns ; i < 4; i++) {
+                    nx = x + move[i] ;
+                    ny = y + move[i+1] ;
+                    ns = s ;
+                    // 越界 或者 有障碍#，结束此次循环
+                    if (nx < 0 || nx == n || ny < 0 || ny == m || grid[nx][ny] == '#') {
+                        continue;
+                    }
+                    // 是锁 并且没有对应钥匙 就是跳出此次 循环
+                    if (grid[nx][ny] >= 'A' && grid[nx][ny] <= 'F' && (ns & ( 1 << (grid[nx][ny] - 'A'))) == 0 ) {
+                        continue;
+                    }
+                    // 如果是钥匙，就 或进 ns中
+                    if (grid[nx][ny] >= 'a' && grid[nx][ny] <= 'f') {
+                        ns |= ( 1 << (grid[nx][ny] - 'a')) ;
+                    }
+                    // 剪枝，一旦发现全部钥匙，直接返回层数
+                    if (ns == key) {
+                        return level ;
+                    }
+                    // 如果没进过队列，就进队列
+                    if (!visited[nx][ny][ns]){
+                        queue[r][0] = nx ;
+                        queue[r][1] = ny ;
+                        queue[r++][2] = ns ;
+                        visited[nx][ny][ns] = true ;
+                    }
+                }
+            }
+            level++ ;
+        }
+        return -1 ;
+    }
 }

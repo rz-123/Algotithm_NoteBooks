@@ -11,8 +11,114 @@ package Dijkstra_分层最短路;
 // 测试链接 : https://www.luogu.com.cn/problem/P4568
 
 
+import java.io.*;
+import java.util.PriorityQueue;
+
 public class Code06_FlightPath1 {
 
+    public static int MAXN = 10001 ;
+
+    public static int MAXM = 100001 ;
+
+    public static int MAXK = 11 ; // 免费次数
+
+    // 链式前向星
+    public static int[] head = new int[MAXN] ;
+    public static int[] next  = new int[MAXM] ;
+    public static int[] to = new int[MAXM] ;
+    public static int[] weight = new int[MAXM] ;
+
+    public static int cnt ;
+
+    public static int[][] distance = new int[MAXN][MAXN] ; // 最短路
+    public static boolean[][] visited = new boolean[MAXN][MAXK] ;
+
+    public static PriorityQueue<int[]> heap = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+    public static int n, m, k, s, t;
+
+    // 初始化
+    public static void build(){
+        cnt = 1 ;
+        for (int i = 0; i < n; i++) {
+            head[i] = 0 ;
+            for (int j = 0; j <= k ; j++) {
+                distance[i][j] = Integer.MAX_VALUE ;
+                visited[i][j] = false ;
+            }
+        }
+        heap.clear();
+    }
+
+    public static void addEdge(int u , int v , int w) {
+        next[cnt] = head[u];
+        to[cnt] = v ;
+        weight[cnt]  = w ;
+        head[u] = cnt++ ;
+    }
+
+    public static int dijkstra(){
+        distance[s][0] = 0 ;
+        heap.add(new int[] {s , 0 , 0}) ;
+        while (!heap.isEmpty()) {
+            int[] record = heap.poll() ;
+            int u = record[0] ;
+            int use = record[1] ;
+            int cost = record[2] ; // u -> use 的价格为cost
+            // 如果进过堆，不管
+            if (visited[u][use]) {
+                continue;
+            }
+            visited[u][use] = true ;
+            if (u == t) {
+                // 常见剪枝
+                // 发现终点直接返回
+                // 不用等都结束
+                return cost;
+            }
+            for (int ei = head[u] , v , w ; ei > 0 ; ei = next[ei]) {
+                v = to[ei];
+                w = weight[ei];
+                // 用免单券
+                // 如果 还有免单券，并且 下一个节点的价格 比 该节点要高，就用免单券
+                if (use < k && distance[v][use + 1] > distance[u][use]) {
+                    distance[v][use + 1] = distance[u][use] ;
+                    // 将下个城市加入队列
+                    heap.add(new int[] { v , use + 1 , distance[v][use + 1]}) ;
+                }
+                // 不用免单券
+                if (distance[v][use] > distance[u][use] + w) {
+                    distance[v][use] = distance[u][use] + w ;
+                    heap.add(new int[] { v , use , distance[v][use]}) ;
+                }
+            }
+        }
+        return -1 ;
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StreamTokenizer in = new StreamTokenizer(br);
+        PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+        while (in.nextToken() != StreamTokenizer.TT_EOF) {
+            n = (int) in.nval;
+            in.nextToken(); m = (int) in.nval;
+            in.nextToken(); k = (int) in.nval;
+            in.nextToken(); s = (int) in.nval;
+            in.nextToken(); t = (int) in.nval;
+            build();
+            for (int i = 0, a, b, c; i < m; i++) {
+                in.nextToken(); a = (int) in.nval;
+                in.nextToken(); b = (int) in.nval;
+                in.nextToken(); c = (int) in.nval;
+                addEdge(a, b, c);
+                addEdge(b, a, c);
+            }
+            out.println(dijkstra());
+        }
+        out.flush();
+        out.close();
+        br.close();
+    }
 
 
 }
