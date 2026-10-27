@@ -43,8 +43,45 @@
   // 你 不能 在 对角线 方向上移动或移动到 边界外（即不允许环绕）
   // 测试链接 : https://leetcode.cn/problems/longest-increasing-path-in-a-matrix/
 
-# 
-* 
+# 第二节
+
+# Code01_DistinctSubsequences
+* // 不同的子序列
+  // 给你两个字符串s和t ，统计并返回在s的子序列中t出现的个数
+  // 答案对 1000000007 取模
+  // 测试链接 : https://leetcode.cn/problems/distinct-subsequences/
+
+# Code02_EditDistance
+* // 编辑距离
+  // 给你两个单词 word1 和 word2
+  // 请返回将 word1 转换成 word2 所使用的最少代价
+  // 你可以对一个单词进行如下三种操作：
+  // 插入一个字符，代价a
+  // 删除一个字符，代价b
+  // 替换一个字符，代价c
+  // 测试链接 : https://leetcode.cn/problems/edit-distance/
+
+# Code03_InterleavingString
+* // 交错字符串
+  // 给定三个字符串 s1、s2、s3
+  // 请帮忙验证s3是否由s1和s2交错组成
+  // 测试链接 : https://leetcode.cn/problems/interleaving-string/
+
+# Code04_FillCellsUseAllColorsWays
+* // 有效涂色问题
+  // 给定n、m两个参数
+  // 一共有n个格子，每个格子可以涂上一种颜色，颜色在m种里选
+  // 当涂满n个格子，并且m种颜色都使用了，叫一种有效方法
+  // 求一共有多少种有效的涂色方法
+  // 1 <= n, m <= 5000
+  // 结果比较大请 % 1000000007 之后返回
+  // 对数器验证
+
+# Code05_MinimumDeleteBecomeSubstring
+* // 删除至少几个字符可以变成另一个字符串的子串
+  // 给定两个字符串s1和s2
+  // 返回s1至少删除多少字符可以成为s2的子串
+  // 对数器验证
 
 # 
 * 
