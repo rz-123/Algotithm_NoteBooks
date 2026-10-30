@@ -8,4 +8,97 @@ package 动态规划.三维动态规划;
 // 测试链接 : https://leetcode.cn/problems/paths-in-matrix-whose-sum-is-divisible-by-k/
 
 public class Code04_PathsDivisibleByK {
+
+    public static int mod = 1000000007;
+
+    // 传入一个二维表格，返回路径和能被k整除的路径数目
+    public static int numberOfPaths( int[][] grid , int k){
+        int n  = grid.length ;
+        int m = grid[0].length ;
+        int[][][] dp = new int[n][m][k];
+        for (int a = 0; a < n; a++) {
+            for (int b = 0; b < m; b++) {
+                for (int c = 0; c < k; c++) {
+                    dp[a][b][c] = -1;
+                }
+            }
+        }
+        return f2(grid, n, m, k, 0, 0, 0, dp); // 记忆化搜索
+
+        // return f1(grid , n , m , k , 0 , 0 , 0); // 暴力递归
+    }
+
+    // 从(i,j)出发，走到(n-1,m-1)位置，一共有多少条路径，累加和模除k的余数是r
+    public static int f1(int[][] grid, int n, int m, int k, int i, int j, int r){
+        // 边界：如果i和j直接就是右下角的值
+        if (i == n - 1 && j == m - 1) {
+            // 那么判断该位置的值模除k是否等于r，等于r就返回一条路径
+            return grid[i][j] % k == r ? 1 : 0 ;
+        }
+        // 后续 需要凑出来的余数need
+        int need = (k+r-(grid[i][j] % k)) % k ;
+        int ans = 0 ;
+        // 先保证i和j不越界，
+        // 因为题目说只能向右或者向下走，所以i+1往下走，j+1往右走
+        if (i+1 < n) {
+            ans = f1(grid , n , m , k , i+1 , j , need) ;
+        }
+        if (j+1 < m) {
+            ans = (ans + f1(grid, n, m, k, i, j + 1, need)) % mod ;
+        }
+        return ans ;
+    }
+
+    public static int f2(int[][] grid, int n, int m, int k, int i, int j, int r, int[][][] dp){
+        // 边界：如果i和j直接就是右下角的值
+        if (i == n - 1 && j == m - 1) {
+            // 那么判断该位置的值模除k是否等于r，等于r就返回一条路径
+            return grid[i][j] % k == r ? 1 : 0 ;
+        }
+        if (dp[i][j][r] != -1) {
+            return dp[i][j][r] ;
+        }
+        // 后续 需要凑出来的余数need
+        int need = (k+r-(grid[i][j] % k)) % k ;
+        int ans = 0 ;
+        // 先保证i和j不越界，
+        // 因为题目说只能向右或者向下走，所以i+1往下走，j+1往右走
+        if (i+1 < n) {
+            ans = f2(grid , n , m , k , i+1 , j , need , dp) ;
+        }
+        if (j+1 < m) {
+            ans = (ans + f2(grid, n, m, k, i, j + 1, need , dp)) % mod ;
+        }
+        dp[i][j][r] = ans ;
+        return ans ;
+    }
+
+    // 严格位置依赖，没看懂
+    public static int numberOfPaths3(int[][] grid, int k) {
+        int n = grid.length;
+        int m = grid[0].length;
+        int[][][] dp = new int[n][m][k];
+        dp[n - 1][m - 1][grid[n - 1][m - 1] % k] = 1;
+        for (int i = n - 2; i >= 0; i--) {
+            for (int r = 0; r < k; r++) {
+                dp[i][m - 1][r] = dp[i + 1][m - 1][(k + r - grid[i][m - 1] % k) % k];
+            }
+        }
+        for (int j = m - 2; j >= 0; j--) {
+            for (int r = 0; r < k; r++) {
+                dp[n - 1][j][r] = dp[n - 1][j + 1][(k + r - grid[n - 1][j] % k) % k];
+            }
+        }
+        for (int i = n - 2, need; i >= 0; i--) {
+            for (int j = m - 2; j >= 0; j--) {
+                for (int r = 0; r < k; r++) {
+                    need = (k + r - grid[i][j] % k) % k;
+                    dp[i][j][r] = dp[i + 1][j][need];
+                    dp[i][j][r] = (dp[i][j][r] + dp[i][j + 1][need]) % mod;
+                }
+            }
+        }
+        return dp[0][0][0];
+    }
+
 }
